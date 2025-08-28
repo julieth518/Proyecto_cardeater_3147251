@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTravelerDto } from './dto/create-traveler.dto';
 import { UpdateTravelerDto } from './dto/update-traveler.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Traveler } from './entities/traveler.entity';
 
 @Injectable()
 export class TravelersService {
@@ -9,8 +10,10 @@ export class TravelersService {
     private prisma: PrismaService
   ) {}
 
-  create(createTravelerDto: CreateTravelerDto) {
-    return 'This action adds a new traveler';
+  create(Body : any) {
+   return this.prisma.travelers.create({
+    data: Body 
+   })
   }
 
   findAll() {
@@ -21,14 +24,26 @@ export class TravelersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} traveler`;
+    return this.prisma.travelers.findFirst({
+      where:{id_travelers:id}
+    })
   }
 
-  update(id: number, updateTravelerDto: UpdateTravelerDto) {
-    return `This action updates a #${id} traveler`;
+  update(id: number,Body: any) {
+       return this.prisma.travelers.update({
+        where: {id_travelers: id},
+        data: Body
+       }); 
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} traveler`;
+  async remove(id: number) {
+    await this.prisma.travelers.delete({
+      where: {id_travelers: id}
+    })
+    return {
+      "exito" : true,
+      "mensaje" : "eliminado correctamente",
+      "id" : id
+    }
   }
 }

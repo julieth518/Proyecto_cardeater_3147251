@@ -8,8 +8,8 @@ export class TravelersController {
   constructor(private readonly travelersService: TravelersService) {}
 
   @Post()
-  create(@Body() createTravelerDto: CreateTravelerDto) {
-    return this.travelersService.create(createTravelerDto);
+  create(@Body() Body : any) {
+    return this.travelersService.create(Body)
   }
 
   @Get()
@@ -23,8 +23,14 @@ export class TravelersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTravelerDto: UpdateTravelerDto) {
-    return this.travelersService.update(+id, updateTravelerDto);
+  update(@Param('id') id: string, 
+  @Body() Body:any) {
+    return {
+      "exito" : true,
+      "mensaje" : "actualizado correctamente",
+      "id" : id,
+      "data" : this.travelersService.update(+id,Body)
+    };
   }
 
   @Delete(':id')
